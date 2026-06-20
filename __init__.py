@@ -181,6 +181,14 @@ def process_device_data(devices):
         imei = device.get("imei", None)
 
         # Convert memory from bytes to GB
+        memory_bytes = device.get("physicalMemoryInBytes", 0)
+        memory_gb = round(memory_bytes / (1024 ** 3)) if memory_bytes else None
+
+        # Map raw storage size to a standardized capacity label
+        storage_mapped = map_storage_size(device.get("totalStorageSpaceInBytes", 0))
+
+        hardware_details = {
+            "serial_number": serial_number,
             "hostname": device.get("deviceName", None),
             "model_description": device.get("model", None),
             "os_version": device.get("operatingSystem", None),
